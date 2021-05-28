@@ -36,6 +36,18 @@
                     "condition": "user_is_logged_in"
                 }]
             }
+        ],
+        "dynamicContentMacros": [
+            {
+                "url": "/timestamp",
+                "description": {
+                    "value": "Absolute timestamp with timezone"
+                },
+                "name": {
+                    "value": "Timestamp"
+                },
+                "key": "com-dagguh-confluence-timestamp"
+            }
         ]
     }
 }
