@@ -1,7 +1,7 @@
 {
-    "key": "my-app",
-    "name": "My app",
-    "description": "My very first app",
+    "key": "com-dagguh-timestamp",
+    "name": "Timestamp",
+    "description": "Timestamp with timezone support",
     "baseUrl": "{{localBaseUrl}}",
     "authentication": {
         "type": "jwt"
@@ -10,7 +10,8 @@
         "installed": "/installed"
     },
     "scopes": [
-        "READ"
+        "READ",
+        "WRITE"
     ],
     "modules": {
         "generalPages": [
@@ -39,7 +40,7 @@
         ],
         "dynamicContentMacros": [
             {
-                "url": "/timestamp",
+                "url": "/timestamp?pageId={page.id}&macroId={macro.id}",
                 "description": {
                     "value": "Absolute timestamp with timezone"
                 },

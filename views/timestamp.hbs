@@ -1,5 +1,58 @@
 {{!< layout}}
 
-<div class="timestamp">
-    <h1>{{year}} - kebab</h1>
-</div>
+<label>
+    Date:
+    <input id="timestamp" type="number"/>
+</label>
+<script>
+    var contentResource = "/rest/api/content/{{pageId}}/property/{{macroId}}"
+    $(function fetchCurrentTimestamp() {
+        AP.request({
+            url: contentResource,
+            success: function useFetchedTimestamp(response) {
+                var timestamp = JSON.parse(response).value.response_values;
+                $("#timestamp").val(timestamp);
+            },
+            error: function handleFetchError(xhr, statusText, errorThrown) {
+                if (xhr.status === 404 && xhr.responseText.includes("No content property found with key")) {
+                    putTimestamp(Date.now());
+                } else {
+                    console.error("Failed to fetch timestamp from " + contentResource, errorThrown)
+                }
+            }
+        });
+    });
+
+    function putTimestamp(timestamp) {
+        AP.request({
+            url: contentResource,
+            type: 'PUT',
+            data: JSON.stringify({
+                "key": "{{macroId}}",
+                "version": {
+                    "number": 1
+                },
+                "value": {
+                    "response_values": timestamp
+                }
+            }),
+            contentType: 'application/json',
+            headers: {
+                Accept: 'application/json'
+            },
+            success: function handleStoredTimestamp(response) {
+                location.reload();
+            },
+            error: function handleStorageError(err) {
+                console.error("Error storing timestamp", err);
+            }
+        });
+    }
+
+    $(function editTimestamp() {
+        $('#timestamp').on('change', function storeNewTimestamp() {
+            var newTimestamp = $("#timestamp").val();
+            putTimestamp(newTimestamp);
+        });
+    })
+</script>

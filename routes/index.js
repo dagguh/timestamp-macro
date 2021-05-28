@@ -22,7 +22,8 @@ export default function routes(app, addon) {
 
     // Add additional route handlers here...
     app.get('/timestamp', addon.authenticate(), async (req, res) => {
-        const year = '1988';
-        res.render('timestamp', {year})
+        const pageId = req.query['pageId'];
+        const macroId = req.query['macroId'];
+        res.render('timestamp', {pageId, macroId});
     });
 }
